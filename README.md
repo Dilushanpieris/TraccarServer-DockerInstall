@@ -107,7 +107,27 @@ sudo nc -l 5001 | hexdump -C
 ## Step 03 - Install Docker Environment
 
 >[!TIP]
->Docker Install Is Required Because it Can Use Resources VEry optimizely With A Swap Area For Low Ram Instances. 
+>Docker Install Is Required Because it Can Use Resources Very optimized With A Swap Area For Low Ram Instances. 
+
+```
+curl -sSL https://raw.githubusercontent.com/Dilushanpieris/TraccarServer-DockerInstall/refs/heads/main/dockerinstall.sh | sudo bash
+```
+
+## Step 04 - Acquire Your API Key From Traccar.
+
+>[!IMPORTANT]
+>You Need To Have Push Notification API Key To Communicate With Android Traccar Application Push Notifications. Acquire Your API Key by Making Account At [Traccar.org](https://www.traccar.org/my-account/) And Note Down APi Key. **API Key Have 64 Charachters** Looks Like..
+
+```
+MnpuZWZ4bjZHRlpDTQeyJkYXRhIjo1MTA2N30uN3BPMTlkbWF2Y1kwam8wc0s1V1V5M2pwa3lz         # Sample API Key FYI
+```
+
+## Step 05 - Install Traccar Using The Script
+
+>[!IMPORTANT]
+>To Run Below Install Command. You May Have API Key , Traccar Panel Port And The Correct Tracker Port For Your GPS. 
+
+**To Install Traccar Run**
 
 ```
 

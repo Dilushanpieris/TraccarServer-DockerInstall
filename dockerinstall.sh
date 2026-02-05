@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# --- Engineering Check: Root Privileges ---
+# --- Check: Root Privileges ---
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root (use sudo)"
    exit 1
@@ -12,7 +12,7 @@ echo "Starting Step 01: System Prep & Docker Installation..."
 apt update && apt upgrade -y
 apt install -y ca-certificates curl gnupg haveged
 
-# 2. Performance Fix: Add 2GB Swap File (Prevents E2-micro freezing)
+# 2. Performance Fix: Add 2GB Swap File
 echo "Setting up 2GB Swap File..."
 fallocate -l 2G /swapfile
 chmod 600 /swapfile
