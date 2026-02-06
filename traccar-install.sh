@@ -5,22 +5,39 @@ echo "--- Traccar Interactive Installer ---"
 mkdir -p ~/traccar && cd ~/traccar
 mkdir -p logs
 
-# --- 2. User Input ---
-read -p "Enter Web Panel Port [Default: 8082]: " PANEL_PORT
+# --- 2. Interactive Prompts ---
+# Panel Port
+read -p "Enter Web Panel Port [Default 8082]: " PANEL_PORT
 PANEL_PORT=${PANEL_PORT:-8082}
 
-read -p "Enter GPS Tracker Port [e.g. 5013]: " TRACKER_PORT
-if [[ -z "$TRACKER_PORT" ]]; then
-    echo "Error: Tracker Port is required for communication."
-    exit 1
+# GPS Port
+read -p "Enter GPS Tracker Port [Default 5013]: " GPS_PORT
+GPS_PORT=${GPS_PORT:-5013}
+
+# API Key (Required for Push)
+echo "------------------------------------------------"
+echo "NOTE: API Key is REQUIRED for Push Notifications."
+echo "If you skip this, push alerts will not work."
+read -p "Enter Traccar.org API Key (or press Enter to skip): " API_KEY
+echo "------------------------------------------------"
+
+# --- 3. Build the Docker Compose ---
+echo "Building configuration..."
+
+# Standard environment variables
+ENV_BLOCK="      - CONFIG_USE_ENVIRONMENT_VARIABLES=true"
+
+# Add push notification logic if key exists
+if [[ ! -z "$API_KEY" ]]; then
+    ENV_BLOCK="$ENV_BLOCK
+      - NOTIFICATOR_TYPES=web,mail,command,traccar
+      - NOTIFICATOR_TRACCAR_KEY=$API_KEY"
+else
+    ENV_BLOCK="$ENV_BLOCK
+      - NOTIFICATOR_TYPES=web,mail,command"
 fi
 
-read -p "Enter Traccar.org API Key (Press Enter to Skip): " API_KEY
-
-# --- 3. Generate Docker Compose ---
-echo "Generating configuration..."
-
-# Start of the Compose file
+# Write the file
 cat <<EOF > docker-compose.yml
 services:
   traccar:
@@ -28,42 +45,22 @@ services:
     container_name: traccar-app
     restart: always
     environment:
-      - CONFIG_USE_ENVIRONMENT_VARIABLES=true
-EOF
-
-# Conditionally add the API Key and Notificator settings
-if [[ ! -z "$API_KEY" ]]; then
-    cat <<EOF >> docker-compose.yml
-      - NOTIFICATOR_TYPES=web,mail,command,traccar
-      - NOTIFICATOR_TRACCAR_KEY=$API_KEY
-EOF
-else
-    cat <<EOF >> docker-compose.yml
-      - NOTIFICATOR_TYPES=web,mail,command
-EOF
-fi
-
-# Add the Ports and Volumes
-cat <<EOF >> docker-compose.yml
+$ENV_BLOCK
     ports:
       - "$PANEL_PORT:8082"
-      - "$TRACKER_PORT:$TRACKER_PORT"
-      - "$TRACKER_PORT:$TRACKER_PORT/udp"
+      - "$GPS_PORT:$GPS_PORT"
+      - "$GPS_PORT:$GPS_PORT/udp"
     volumes:
       - ./logs:/opt/traccar/logs:rw
 EOF
 
-# --- 4. Deployment ---
-echo "Deploying Traccar Container..."
+# --- 4. Launch ---
+echo "Starting Traccar..."
 sudo docker compose up -d
 
 echo "------------------------------------------------"
-echo "INSTALLATION COMPLETE"
-echo "Panel: http://$(curl -s ifconfig.me):$PANEL_PORT"
-echo "Tracker Port: $TRACKER_PORT"
-if [[ -z "$API_KEY" ]]; then
-    echo "Push Notifications: DISABLED (No API Key provided)"
-else
-    echo "Push Notifications: ENABLED"
-fi
+echo "INSTALLATION SUCCESSFUL"
+echo "Web Panel: http://$(curl -s ifconfig.me):$PANEL_PORT"
+echo "Tracker Port: $GPS_PORT"
+[[ ! -z "$API_KEY" ]] && echo "Push Notifications: ENABLED" || echo "Push Notifications: DISABLED"
 echo "------------------------------------------------"
