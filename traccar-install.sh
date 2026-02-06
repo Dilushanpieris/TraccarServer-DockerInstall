@@ -5,39 +5,34 @@ echo "--- Traccar Interactive Installer ---"
 mkdir -p ~/traccar && cd ~/traccar
 mkdir -p logs
 
-# --- 2. Interactive Prompts ---
+# --- 2. Interactive Prompts (Forced to Keyboard) ---
 # Panel Port
-read -p "Enter Web Panel Port [Default 8082]: " PANEL_PORT
+echo -n "Enter Web Panel Port [Default 8082]: "
+read PANEL_PORT < /dev/tty
 PANEL_PORT=${PANEL_PORT:-8082}
 
 # GPS Port
-read -p "Enter GPS Tracker Port [Default 5013]: " GPS_PORT
+echo -n "Enter GPS Tracker Port [Default 5013]: "
+read GPS_PORT < /dev/tty
 GPS_PORT=${GPS_PORT:-5013}
 
 # API Key (Required for Push)
 echo "------------------------------------------------"
 echo "NOTE: API Key is REQUIRED for Push Notifications."
-echo "If you skip this, push alerts will not work."
-read -p "Enter Traccar.org API Key (or press Enter to skip): " API_KEY
+read -p "Enter Traccar.org API Key (or press Enter to skip): " API_KEY < /dev/tty
 echo "------------------------------------------------"
 
 # --- 3. Build the Docker Compose ---
 echo "Building configuration..."
 
-# Standard environment variables
-ENV_BLOCK="      - CONFIG_USE_ENVIRONMENT_VARIABLES=true"
-
-# Add push notification logic if key exists
 if [[ ! -z "$API_KEY" ]]; then
-    ENV_BLOCK="$ENV_BLOCK
-      - NOTIFICATOR_TYPES=web,mail,command,traccar
-      - NOTIFICATOR_TRACCAR_KEY=$API_KEY"
+    NOTIF_TYPE="web,mail,command,traccar"
+    NOTIF_KEY="      - NOTIFICATOR_TRACCAR_KEY=$API_KEY"
 else
-    ENV_BLOCK="$ENV_BLOCK
-      - NOTIFICATOR_TYPES=web,mail,command"
+    NOTIF_TYPE="web,mail,command"
+    NOTIF_KEY=""
 fi
 
-# Write the file
 cat <<EOF > docker-compose.yml
 services:
   traccar:
@@ -45,7 +40,9 @@ services:
     container_name: traccar-app
     restart: always
     environment:
-$ENV_BLOCK
+      - CONFIG_USE_ENVIRONMENT_VARIABLES=true
+      - NOTIFICATOR_TYPES=$NOTIF_TYPE
+$NOTIF_KEY
     ports:
       - "$PANEL_PORT:8082"
       - "$GPS_PORT:$GPS_PORT"
@@ -58,9 +55,12 @@ EOF
 echo "Starting Traccar..."
 sudo docker compose up -d
 
+# Get Clean IP (Handle IPv4 specifically)
+SERVER_IP=$(curl -s -4 ifconfig.me)
+
 echo "------------------------------------------------"
 echo "INSTALLATION SUCCESSFUL"
-echo "Web Panel: http://$(curl -s ifconfig.me):$PANEL_PORT"
+echo "Web Panel: http://$SERVER_IP:$PANEL_PORT"
 echo "Tracker Port: $GPS_PORT"
 [[ ! -z "$API_KEY" ]] && echo "Push Notifications: ENABLED" || echo "Push Notifications: DISABLED"
 echo "------------------------------------------------"
