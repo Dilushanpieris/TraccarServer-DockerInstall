@@ -13,7 +13,8 @@ sudo apt-get update
 sudo apt-get upgrade
 sudo apt-get install cron
 sudo apt-get install -y socat
-sudo apt install netcat
+sudo apt install netcat-openbsd
+
 
 ```
 
@@ -115,7 +116,7 @@ curl -sSL https://raw.githubusercontent.com/Dilushanpieris/TraccarServer-DockerI
 
 ## Step 04 - Acquire Your API Key From Traccar.
 
->[!IMPORTANT]
+>[!TIP]
 >You Need To Have Push Notification API Key To Communicate With Android Traccar Application Push Notifications. Acquire Your API Key by Making Account At [Traccar.org](https://www.traccar.org/my-account/) And Note Down APi Key. **API Key Have 64 Charachters** Looks Like..
 
 ```
@@ -130,5 +131,6 @@ MnpuZWZ4bjZHRlpDTQeyJkYXRhIjo1MTA2N30uN3BPMTlkbWF2Y1kwam8wc0s1V1V5M2pwa3lz      
 **To Install Traccar Run**
 
 ```
-
+curl -sSL https://raw.githubusercontent.com/Dilushanpieris/TraccarServer-DockerInstall/refs/heads/main/traccar-install.sh | sudo bash
 ```
+
