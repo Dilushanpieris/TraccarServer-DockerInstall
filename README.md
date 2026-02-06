@@ -178,3 +178,26 @@ bash <(curl -sSL https://raw.githubusercontent.com/Dilushanpieris/TraccarServer-
 ```
 bash <(curl -sSL https://raw.githubusercontent.com/Dilushanpieris/TraccarServer-DockerInstall/refs/heads/main/uninstall-nginx.sh)
 ```
+
+<hr>
+
+## Check Docker Container Status.
+
+>[!CAUTION]
+>Just Wait After Each Restart. Docker Needs Some Time to Start Services. It Is Based on your RAM And CPU of The VPS. Don't Try to Spam Following Commands VPS Can Be Unresponsive If you Continue to do So.
+
+**Live Performance Check**
+
+```
+sudo docker stats
+```
+
+**Show All Docker logs**
+```
+sudo docker ps -a
+```
+
+**Quick Check of Services**
+```
+sudo docker ps
+```
