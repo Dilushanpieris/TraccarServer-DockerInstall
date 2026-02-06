@@ -131,13 +131,36 @@ MnpuZWZ4bjZHRlpDTQeyJkYXRhIjo1MTA2N30uN3BPMTlkbWF2Y1kwam8wc0s1V1V5M2pwa3lz      
 **To Install Traccar Run**
 
 ```
-curl -sSL https://raw.githubusercontent.com/Dilushanpieris/TraccarServer-DockerInstall/refs/heads/main/traccar-install.sh | sudo bash
+bash <(curl -sSL https://raw.githubusercontent.com/Dilushanpieris/TraccarServer-DockerInstall/refs/heads/main/traccar-install.sh)
 ```
 
 
+## Step 06 Create SSL Certs For Web Panel (HTTPS)
 
+>[!TIP]
+>For Traccar SSL Is Optional to Ensure Complience. For GPS Only Use IP Address and For Traccar Application Use. Http/ Https  absed on Your Preference.
 
+**To Install Nginx Proxy Manager**
 
+```
+
+```
+
+>[!IMPORTANT]
+>You Will Wnd up With Local IP Address That Looks Mostly Like 172.17.0.1 At The Script End Use It As Forward Destination on Proxy manager. 
+
+### Setup Procedure For NGinix Proxy.
+Go to Domain That Printed on your Script.
+
+Hosts > Proxy Hosts > Add Proxy Host 
+Add your Domain Name As The Domain Name 
+scheme : http
+Forward Hostname: use Hostname Printed At The End Of Script (Usually 172.17.0.1)
+Forward Port: Your Traccar Port (Default use 8082)
+Block Common Exploits: On.
+Websockets Support: On (Crucial for live tracking).
+
+Finally Generate SSL Certs With SSL Tab. (Create New Certificate)
 
 
 ## Step 07 Uninstall Traccar From VPS.
