@@ -111,7 +111,7 @@ sudo nc -l 5001 | hexdump -C
 >Docker Install Is Required Because it Can Use Resources Very optimized With A Swap Area For Low Ram Instances. 
 
 ```
-curl -sSL https://raw.githubusercontent.com/Dilushanpieris/TraccarServer-DockerInstall/refs/heads/main/dockerinstall.sh | sudo bash
+bash <(curl -sSL https://raw.githubusercontent.com/Dilushanpieris/TraccarServer-DockerInstall/refs/heads/main/dockerinstall.sh)
 ```
 
 ## Step 04 - Acquire Your API Key From Traccar.
@@ -134,3 +134,17 @@ MnpuZWZ4bjZHRlpDTQeyJkYXRhIjo1MTA2N30uN3BPMTlkbWF2Y1kwam8wc0s1V1V5M2pwa3lz      
 curl -sSL https://raw.githubusercontent.com/Dilushanpieris/TraccarServer-DockerInstall/refs/heads/main/traccar-install.sh | sudo bash
 ```
 
+
+
+
+
+
+
+## Step 07 Uninstall Traccar From VPS.
+>[!TIP]
+>Before Uninstall Traccar Make Sure To Remove Your GPS From The Panel And Then Procced With Following Command. 
+
+```
+
+
+```
