@@ -145,6 +145,6 @@ curl -sSL https://raw.githubusercontent.com/Dilushanpieris/TraccarServer-DockerI
 >Before Uninstall Traccar Make Sure To Remove Your GPS From The Panel And Then Procced With Following Command. 
 
 ```
-
+bash <(curl -sSL https://raw.githubusercontent.com/Dilushanpieris/TraccarServer-DockerInstall/refs/heads/main/traccar-uninstall.sh)
 
 ```
