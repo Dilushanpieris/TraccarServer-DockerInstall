@@ -143,7 +143,7 @@ bash <(curl -sSL https://raw.githubusercontent.com/Dilushanpieris/TraccarServer-
 **To Install Nginx Proxy Manager**
 
 ```
-
+bash <(curl -sSL https://raw.githubusercontent.com/Dilushanpieris/TraccarServer-DockerInstall/refs/heads/main/install-nginx.sh)
 ```
 
 >[!IMPORTANT]
@@ -152,22 +152,29 @@ bash <(curl -sSL https://raw.githubusercontent.com/Dilushanpieris/TraccarServer-
 ### Setup Procedure For NGinix Proxy.
 Go to Domain That Printed on your Script.
 
-Hosts > Proxy Hosts > Add Proxy Host 
-Add your Domain Name As The Domain Name 
-scheme : http
-Forward Hostname: use Hostname Printed At The End Of Script (Usually 172.17.0.1)
-Forward Port: Your Traccar Port (Default use 8082)
-Block Common Exploits: On.
-Websockets Support: On (Crucial for live tracking).
+Hosts > Proxy Hosts > Add Proxy Host  <br>
+Add your Domain Name As The Domain Name <br>
+scheme : http <br>
+Forward Hostname: use Hostname Printed At The End Of Script (Usually 172.17.0.1) <br>
+Forward Port: Your Traccar Port (Default use 8082) <br>
+Block Common Exploits: On. <br>
+Websockets Support: On (Crucial for live tracking).<br>
 
 Finally Generate SSL Certs With SSL Tab. (Create New Certificate)
 
 
 ## Step 07 Uninstall Traccar From VPS.
 >[!TIP]
->Before Uninstall Traccar Make Sure To Remove Your GPS From The Panel And Then Procced With Following Command. 
+>Before Uninstall Traccar Make Sure To Remove Your GPS From The Panel And Then Procced With Following Command. And Remove Any Nginx Rules 
+
+**To Uninstall Traccar and Delete Container**
 
 ```
 bash <(curl -sSL https://raw.githubusercontent.com/Dilushanpieris/TraccarServer-DockerInstall/refs/heads/main/traccar-uninstall.sh)
 
+```
+
+**To Remove Nginx Proxy Manager**
+```
+bash <(curl -sSL https://raw.githubusercontent.com/Dilushanpieris/TraccarServer-DockerInstall/refs/heads/main/uninstall-nginx.sh)
 ```
